@@ -135,12 +135,20 @@
             #endregion
 
             #region Properties 
-            Dollar d = new Dollar(1.025M);
-            Console.WriteLine(d.Amount);
-            d.Amount = 1.9990m;
-            Console.WriteLine(d.Amount);
+            //Dollar d = new Dollar(1.025M);
+            //Console.WriteLine(d.Amount);
+            //d.Amount = 1.9990m;
+            //Console.WriteLine(d.Amount);
             #endregion
 
+            #region Indexers ID.Ex
+
+
+            ID id = new ID("255.255.25.2");
+            id[2] = 1;
+            Console.WriteLine(id.Display());
+
+            #endregion
 
         }
 
@@ -214,16 +222,16 @@
         public string FName;
         public string LName;
 
-        private Ob(int id,string fname, string lname)
+        private Ob(int id, string fname, string lname)
         {
-            Id = id ;
-            FName = fname ;
-            LName = lname ;
+            Id = id;
+            FName = fname;
+            LName = lname;
         }
 
-        public static Ob Create(int id , string fName, string LName)
+        public static Ob Create(int id, string fName, string LName)
         {
-            return new Ob(id,fName, LName) ;
+            return new Ob(id, fName, LName);
         }
         public string Display() => $"Id: {Id} ,FirstName: {FName} ,LastName: {LName}.";
     }
@@ -251,77 +259,118 @@
             _amount = ProcessValue(amount);
         }
 
-        private decimal ProcessValue(decimal value) => value <= 0 ? 0 : Math.Round(value,2);
+        private decimal ProcessValue(decimal value) => value <= 0 ? 0 : Math.Round(value, 2);
     }
 
-    
+
     #endregion
 
+    #region Indexers
 
-    //class test2
-    //{
-    //    public int me(out int age)
-    //    {
-    //        age = 10;
-    //        return age;
-    //    }
-    //}
-    //public class DoAction
-    //{
-    //    public int DoValuev(int age)
-    //    {
-    //        age = age * 2;
-    //        return age;
-    //    }
-    //    public void DoValuer(int[] a)
-    //    {
-    //        a[2] = 5;
-    //        a = null;
-    //    }
-    //    public void DoRefencev(ref int x, ref int y)
-    //    {
-    //        var temp = x;
-    //        x = y;
-    //        y = temp;
-    //    }
+    public class ID
+    {
+        private int[] ids = new int[4];
 
-    //    public void DoRefencer(ref int[] a)
-    //    {
-    //        a[2] = 5;
-    //        a = null;
-    //    }
+        public int this[int indx]
+        {
+            get
+            {
+                return ids[indx];
+            }
+            set 
+            {
+                ids[indx] = value;
+            }
+        }
 
-    //    public int outmodifier(int x, out int y,in int d)
-    //    {
-    //        y = x*d;
-    //        return x * x * y;
-    //    }
+        public ID(string s)  // 123.652.36.14
+        {
+            var r = s.Split(".");
+            for (int i = 0; i < ids.Length; i++)
+            {
+                ids[i] = int.Parse(r[i]);
+            }
 
 
-    //    public void paramms(string s,params int[] a )
-    //    {
-    //        a[0] = 5;
-    //        a[1] = 5;
-    //        Console.WriteLine(a[4]);
-    //        Console.WriteLine(a[2]);
-    //        s= "hap";
-    //        Console.WriteLine(s);
+        }
+        public ID(int Seg1, int Seg2, int Seg3, int Seg4)
+        {
+            ids[0] = Seg1;
+            ids[1] = Seg2;
+            ids[2] = Seg3;
+            ids[3] = Seg4;
+        }
 
-    //    }
+        public string Display() => string.Join(".", ids);
 
-    //    public void testOptional(int x =  0, int y = 0)
-    //    {
-    //        Console.WriteLine(x);
-    //        Console.WriteLine(y);
-    //    }
+        #endregion
 
-    //    public void NamedArg(int x , int y, int z )
-    //    {
-    //        Console.WriteLine(x);
-    //        Console.WriteLine(y);
-    //        Console.WriteLine(z);
-    //    }
 
-    //}
+        //class test2
+        //{
+        //    public int me(out int age)
+        //    {
+        //        age = 10;
+        //        return age;
+        //    }
+        //}
+        //public class DoAction
+        //{
+        //    public int DoValuev(int age)
+        //    {
+        //        age = age * 2;
+        //        return age;
+        //    }
+        //    public void DoValuer(int[] a)
+        //    {
+        //        a[2] = 5;
+        //        a = null;
+        //    }
+        //    public void DoRefencev(ref int x, ref int y)
+        //    {
+        //        var temp = x;
+        //        x = y;
+        //        y = temp;
+        //    }
 
+        //    public void DoRefencer(ref int[] a)
+        //    {
+        //        a[2] = 5;
+        //        a = null;
+        //    }
+
+        //    public int outmodifier(int x, out int y,in int d)
+        //    {
+        //        y = x*d;
+        //        return x * x * y;
+        //    }
+
+
+        //    public void paramms(string s,params int[] a )
+        //    {
+        //        a[0] = 5;
+        //        a[1] = 5;
+        //        Console.WriteLine(a[4]);
+        //        Console.WriteLine(a[2]);
+        //        s= "hap";
+        //        Console.WriteLine(s);
+
+        //    }
+
+        //    public void testOptional(int x =  0, int y = 0)
+        //    {
+        //        Console.WriteLine(x);
+        //        Console.WriteLine(y);
+        //    }
+
+        //    public void NamedArg(int x , int y, int z )
+        //    {
+        //        Console.WriteLine(x);
+        //        Console.WriteLine(y);
+        //        Console.WriteLine(z);
+        //    }
+
+        //}
+
+    }
 }
