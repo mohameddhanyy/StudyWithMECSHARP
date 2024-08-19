@@ -1,5 +1,6 @@
 ﻿namespace Index
 {
+    public delegate void RecDele(int width,int height); 
     internal class Program
     {
         static void Main(string[] args)
@@ -150,6 +151,40 @@
 
             #endregion
 
+
+
+            //var emps =new Emp[]
+            //{
+            //    new Emp{Id = 1, Name = "Mohamed", Gender ="Male", TotalSales = 4100M },
+            //    new Emp{Id = 2, Name = "Amr", Gender ="Male", TotalSales = 8000m },
+            //    new Emp{Id = 3 ,Name = "Mai", Gender ="Female", TotalSales = 6000m },
+            //    new Emp{Id = 4, Name = "Shahd", Gender ="Female", TotalSales = 11000m },
+            //    new Emp{Id = 5, Name = "Hany", Gender ="Male", TotalSales = 3000M },
+            //    new Emp{Id = 6, Name = "Ismail", Gender ="Male", TotalSales =7000m },
+            //    new Emp{Id = 7 ,Name = "Amany", Gender ="Female", TotalSales = 2000m },
+            //    new Emp{Id = 8, Name = "Fatma", Gender ="Female", TotalSales = 9500m }
+
+            //};
+
+            Report r = new Report();
+            //r.Process(emps, "This Employees Less Than 5000$", e =>e.TotalSales < 5000);
+            //r.Process(emps, "This Employees between 5000 And 8000", e => e.TotalSales > 5000 && e.TotalSales < 8000);
+            //r.Process(emps, "This Employees Up 8000", e => e.TotalSales > 8000);
+
+            // MultiCast Delegate
+
+            //Rectangle rec = new Rectangle();
+            //rec.Area(10,10);
+            //rec.Paremeter(10,10);
+
+            //RecDele recdele;
+            //recdele = rec.Area;
+            //recdele += rec.Paremeter; 
+            //recdele(10,10);
+
+            //recdele -= rec.Paremeter;
+            //recdele(40, 40);
+
         }
 
     }
@@ -266,24 +301,24 @@
     #endregion
 
     #region Indexers
-
     public class ID
     {
         private int[] ids = new int[4];
 
+        // indexer
         public int this[int indx]
         {
             get
             {
                 return ids[indx];
             }
-            set 
+            set
             {
                 ids[indx] = value;
             }
         }
 
-        public ID(string s)  // 123.652.36.14
+        public ID(string s)  // 123.652.36.14 as string 
         {
             var r = s.Split(".");
             for (int i = 0; i < ids.Length; i++)
@@ -302,75 +337,94 @@
         }
 
         public string Display() => string.Join(".", ids);
-
-        #endregion
-
-
-        //class test2
-        //{
-        //    public int me(out int age)
-        //    {
-        //        age = 10;
-        //        return age;
-        //    }
-        //}
-        //public class DoAction
-        //{
-        //    public int DoValuev(int age)
-        //    {
-        //        age = age * 2;
-        //        return age;
-        //    }
-        //    public void DoValuer(int[] a)
-        //    {
-        //        a[2] = 5;
-        //        a = null;
-        //    }
-        //    public void DoRefencev(ref int x, ref int y)
-        //    {
-        //        var temp = x;
-        //        x = y;
-        //        y = temp;
-        //    }
-
-        //    public void DoRefencer(ref int[] a)
-        //    {
-        //        a[2] = 5;
-        //        a = null;
-        //    }
-
-        //    public int outmodifier(int x, out int y,in int d)
-        //    {
-        //        y = x*d;
-        //        return x * x * y;
-        //    }
-
-
-        //    public void paramms(string s,params int[] a )
-        //    {
-        //        a[0] = 5;
-        //        a[1] = 5;
-        //        Console.WriteLine(a[4]);
-        //        Console.WriteLine(a[2]);
-        //        s= "hap";
-        //        Console.WriteLine(s);
-
-        //    }
-
-        //    public void testOptional(int x =  0, int y = 0)
-        //    {
-        //        Console.WriteLine(x);
-        //        Console.WriteLine(y);
-        //    }
-
-        //    public void NamedArg(int x , int y, int z )
-        //    {
-        //        Console.WriteLine(x);
-        //        Console.WriteLine(y);
-        //        Console.WriteLine(z);
-        //    }
-
-        //}
-
     }
+
+    #endregion
+
+    #region Delegate
+    public class Rectangle
+    
+    {
+        public void Area(int width, int height)
+        {
+            var result = width * height;
+            Console.WriteLine($"Area: {width} * {height} = {result}");
+        }
+
+        public void Paremeter(int width, int height)
+        {
+            var result = (width + height) * 2;
+            Console.WriteLine($"Paremeter: 2 * ({width} + {height}) = {result}");
+        }
+    }
+
+    #endregion
+
+
+    //class test2
+    //{
+    //    public int me(out int age)
+    //    {
+    //        age = 10;
+    //        return age;
+    //    }
+    //}
+    //public class DoAction
+    //{
+    //    public int DoValuev(int age)
+    //    {
+    //        age = age * 2;
+    //        return age;
+    //    }
+    //    public void DoValuer(int[] a)
+    //    {
+    //        a[2] = 5;
+    //        a = null;
+    //    }
+    //    public void DoRefencev(ref int x, ref int y)
+    //    {
+    //        var temp = x;
+    //        x = y;
+    //        y = temp;
+    //    }
+
+    //    public void DoRefencer(ref int[] a)
+    //    {
+    //        a[2] = 5;
+    //        a = null;
+    //    }
+
+    //    public int outmodifier(int x, out int y,in int d)
+    //    {
+    //        y = x*d;
+    //        return x * x * y;
+    //    }
+
+
+    //    public void paramms(string s,params int[] a )
+    //    {
+    //        a[0] = 5;
+    //        a[1] = 5;
+    //        Console.WriteLine(a[4]);
+    //        Console.WriteLine(a[2]);
+    //        s= "hap";
+    //        Console.WriteLine(s);
+
+    //    }
+
+    //    public void testOptional(int x =  0, int y = 0)
+    //    {
+    //        Console.WriteLine(x);
+    //        Console.WriteLine(y);
+    //    }
+
+    //    public void NamedArg(int x , int y, int z )
+    //    {
+    //        Console.WriteLine(x);
+    //        Console.WriteLine(y);
+    //        Console.WriteLine(z);
+    //    }
+
+    //}
+
 }
