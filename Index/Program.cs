@@ -149,7 +149,7 @@ namespace Index
 
             ID id = new ID("255.255.25.2");
             id[2] = 1;
-            Console.WriteLine(id.Display());
+            //Console.WriteLine(id.Display());
 
             #endregion
 
@@ -188,32 +188,41 @@ namespace Index
             #endregion
 
             #region Event
-            var s = new Stock("Amazon");
-            s.Price = 100m;
-            s.OnChangePrice += (s ,oldPrice) => {
-                var result = "";
-                if (s.Price < oldPrice)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    result = "Down";
-                }
-                else if (s.Price > oldPrice)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    result = "Up";
-                }
-                else
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                Console.WriteLine($"{s.Name} : {s.Price} -- {result}");
-            }; 
+            //var s = new Stock("Amazon");
+            //s.Price = 100m;
+            //s.OnChangePrice += (s ,oldPrice) => {
+            //    var result = "";
+            //    if (s.Price < oldPrice)
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.Red;
+            //        result = "Down";
+            //    }
+            //    else if (s.Price > oldPrice)
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.Green;
+            //        result = "Up";
+            //    }
+            //    else
+            //        Console.ForegroundColor = ConsoleColor.Gray;
+            //    Console.WriteLine($"{s.Name} : {s.Price} -- {result}");
+            //}; 
 
-            s.ChangePriceBy(0.05M);
-            s.ChangePriceBy(-0.05M);
-            s.ChangePriceBy(0.00M);
+            //s.ChangePriceBy(0.05M);
+            //s.ChangePriceBy(-0.05M);
+            //s.ChangePriceBy(0.00M);
+            #endregion
 
+            #region Operator OverLoading
+
+            Money m1 = new Money(10);
+            Money m2 = new Money(20);
+            Money m3 = ++m1;
+            Console.WriteLine(m3.Amount);
 
 
             #endregion
+
+            Console.ReadKey();
         }
 
     }
@@ -484,5 +493,49 @@ namespace Index
     }
 
     #endregion
+
+    #region Operator OverLoading
+
+    public class Money
+    {
+        public decimal Amount { get; private set; }
+
+        public Money(decimal amount)
+        {
+            Amount = amount;
+        }
+
+        // Arthematic Operators
+        public static Money operator +(Money a, Money b) => new Money(a.Amount + b.Amount);
+        public static Money operator -(Money a, Money b) => new Money(a.Amount - b.Amount);
+        public static Money operator /(Money a, Money b) => new Money(a.Amount / b.Amount);
+        public static Money operator *(Money a, Money b) => new Money(a.Amount * b.Amount);
+        public static Money operator %(Money a, Money b) => new Money(a.Amount % b.Amount);
+
+        // Relational Operators 
+        public static bool operator >(Money a, Money b) => a.Amount > b.Amount;
+        public static bool operator <(Money a, Money b) => a.Amount > b.Amount;
+        public static bool operator >=(Money a, Money b) => a.Amount >= b.Amount;
+        public static bool operator <=(Money a, Money b) => a.Amount <= b.Amount;
+        public static bool operator ==(Money a, Money b) => a.Amount == b.Amount;
+        public static bool operator !=(Money a, Money b) => a.Amount != b.Amount;
+
+        // Unary Operator 
+        public static Money operator ++(Money a) =>new Money( ++a.Amount);
+        public static Money operator --(Money a) => new Money(--a.Amount);
+
+
+
+
+
+
+
+
+
+
+    }
+    #endregion
+
+
 
 }
