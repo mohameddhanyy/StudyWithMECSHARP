@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Index
 {
@@ -214,15 +215,36 @@ namespace Index
 
             #region Operator OverLoading
 
-            Money m1 = new Money(10);
-            Money m2 = new Money(20);
-            Money m3 = ++m1;
-            Console.WriteLine(m3.Amount);
+            //Money m1 = new Money(10);
+            //Money m2 = new Money(20);
+            //Money m3 = ++m1;
+            //Console.WriteLine(m3.Amount);
 
 
             #endregion
 
+            #region Finilizer (Garbage Collector)
+            Person p = new Person();
+            Version();
+            Console.WriteLine($"Before Call Garbage Collctor{GC.GetTotalMemory(false):N}");
+            GC.Collect();
+            Console.WriteLine($"After Call Garbage Collctor{GC.GetTotalMemory(true):N}");
+
+
+            //p.Name = "Mohamed";
+
+            #endregion
+
             Console.ReadKey();
+        }
+         static void Version()
+        {
+            var V = new Version();
+            for (int i = 0; i < 1000; i++)
+            {
+                V = new Version();
+
+            }
         }
 
     }
@@ -535,6 +557,27 @@ namespace Index
 
     }
     #endregion
+
+    #region Finilizer (Garbage Collector)
+    public class Person
+    {
+        public string Name { get; set; }
+
+
+        public Person()
+        {
+            Console.WriteLine("This is Constructor");
+            
+        }
+
+        ~Person()
+        {
+            Console.WriteLine("This is Destructor");
+        }
+    }
+    #endregion
+
+
 
 
 
