@@ -1,4 +1,6 @@
-﻿namespace Index
+﻿using System.Runtime.CompilerServices;
+
+namespace Index
 {
     public delegate void RecDele(int width,int height); 
     internal class Program
@@ -151,8 +153,7 @@
 
             #endregion
 
-
-
+            #region Delegate
             //var emps =new Emp[]
             //{
             //    new Emp{Id = 1, Name = "Mohamed", Gender ="Male", TotalSales = 4100M },
@@ -166,7 +167,7 @@
 
             //};
 
-            Report r = new Report();
+            //Report r = new Report();
             //r.Process(emps, "This Employees Less Than 5000$", e =>e.TotalSales < 5000);
             //r.Process(emps, "This Employees between 5000 And 8000", e => e.TotalSales > 5000 && e.TotalSales < 8000);
             //r.Process(emps, "This Employees Up 8000", e => e.TotalSales > 8000);
@@ -184,7 +185,35 @@
 
             //recdele -= rec.Paremeter;
             //recdele(40, 40);
+            #endregion
 
+            #region Event
+            var s = new Stock("Amazon");
+            s.Price = 100m;
+            s.OnChangePrice += (s ,oldPrice) => {
+                var result = "";
+                if (s.Price < oldPrice)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    result = "Down";
+                }
+                else if (s.Price > oldPrice)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    result = "Up";
+                }
+                else
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"{s.Name} : {s.Price} -- {result}");
+            }; 
+
+            s.ChangePriceBy(0.05M);
+            s.ChangePriceBy(-0.05M);
+            s.ChangePriceBy(0.00M);
+
+
+
+            #endregion
         }
 
     }
@@ -249,6 +278,75 @@
     }
     #endregion
 
+    #region Method
+
+    //class test2
+    //{
+    //    public int me(out int age)
+    //    {
+    //        age = 10;
+    //        return age;
+    //    }
+    //}
+    //public class DoAction
+    //{
+    //    public int DoValuev(int age)
+    //    {
+    //        age = age * 2;
+    //        return age;
+    //    }
+    //    public void DoValuer(int[] a)
+    //    {
+    //        a[2] = 5;
+    //        a = null;
+    //    }
+    //    public void DoRefencev(ref int x, ref int y)
+    //    {
+    //        var temp = x;
+    //        x = y;
+    //        y = temp;
+    //    }
+
+    //    public void DoRefencer(ref int[] a)
+    //    {
+    //        a[2] = 5;
+    //        a = null;
+    //    }
+
+    //    public int outmodifier(int x, out int y,in int d)
+    //    {
+    //        y = x*d;
+    //        return x * x * y;
+    //    }
+
+
+    //    public void paramms(string s,params int[] a )
+    //    {
+    //        a[0] = 5;
+    //        a[1] = 5;
+    //        Console.WriteLine(a[4]);
+    //        Console.WriteLine(a[2]);
+    //        s= "hap";
+    //        Console.WriteLine(s);
+
+    //    }
+
+    //    public void testOptional(int x =  0, int y = 0)
+    //    {
+    //        Console.WriteLine(x);
+    //        Console.WriteLine(y);
+    //    }
+
+    //    public void NamedArg(int x , int y, int z )
+    //    {
+    //        Console.WriteLine(x);
+    //        Console.WriteLine(y);
+    //        Console.WriteLine(z);
+    //    }
+
+    //}
+
+    #endregion
 
     #region Object Initializer 
     public class Ob
@@ -360,71 +458,31 @@
 
     #endregion
 
+    public delegate void ChangePriceHandler(Stock s ,decimal oldPrice);
 
-    //class test2
-    //{
-    //    public int me(out int age)
-    //    {
-    //        age = 10;
-    //        return age;
-    //    }
-    //}
-    //public class DoAction
-    //{
-    //    public int DoValuev(int age)
-    //    {
-    //        age = age * 2;
-    //        return age;
-    //    }
-    //    public void DoValuer(int[] a)
-    //    {
-    //        a[2] = 5;
-    //        a = null;
-    //    }
-    //    public void DoRefencev(ref int x, ref int y)
-    //    {
-    //        var temp = x;
-    //        x = y;
-    //        y = temp;
-    //    }
+    #region Event
+    public class Stock
+    {
+        public string Name { get; private set; }
+        public decimal Price { get; set; }
 
-    //    public void DoRefencer(ref int[] a)
-    //    {
-    //        a[2] = 5;
-    //        a = null;
-    //    }
+        public event ChangePriceHandler OnChangePrice;
 
-    //    public int outmodifier(int x, out int y,in int d)
-    //    {
-    //        y = x*d;
-    //        return x * x * y;
-    //    }
+        public Stock(string name)
+        {
+        this.Name= name;
+        }
 
+        public void ChangePriceBy(decimal percent)
+        {
+            var oldPrice = Price;
+            Price += Math.Round(Price * percent, 2);
+            if(OnChangePrice!= null) 
+                OnChangePrice(this,oldPrice);
+        }
 
-    //    public void paramms(string s,params int[] a )
-    //    {
-    //        a[0] = 5;
-    //        a[1] = 5;
-    //        Console.WriteLine(a[4]);
-    //        Console.WriteLine(a[2]);
-    //        s= "hap";
-    //        Console.WriteLine(s);
+    }
 
-    //    }
-
-    //    public void testOptional(int x =  0, int y = 0)
-    //    {
-    //        Console.WriteLine(x);
-    //        Console.WriteLine(y);
-    //    }
-
-    //    public void NamedArg(int x , int y, int z )
-    //    {
-    //        Console.WriteLine(x);
-    //        Console.WriteLine(y);
-    //        Console.WriteLine(z);
-    //    }
-
-    //}
+    #endregion
 
 }
