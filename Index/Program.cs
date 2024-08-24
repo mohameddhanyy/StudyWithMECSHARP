@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Index
 {
-    public delegate void RecDele(int width,int height); 
+    public delegate void RecDele(int width, int height);
     internal class Program
     {
         static void Main(string[] args)
@@ -224,28 +224,73 @@ namespace Index
             #endregion
 
             #region Finilizer (Garbage Collector)
-            Person p = new Person();
-            Version();
-            Console.WriteLine($"Before Call Garbage Collctor{GC.GetTotalMemory(false):N}");
-            GC.Collect();
-            Console.WriteLine($"After Call Garbage Collctor{GC.GetTotalMemory(true):N}");
-
-
+            //Person p = new Person();
+            //Version();
+            //Console.WriteLine($"Before Call Garbage Collctor{GC.GetTotalMemory(false):N}");
+            //GC.Collect();
+            //Console.WriteLine($"After Call Garbage Collctor{GC.GetTotalMemory(true):N}");
             //p.Name = "Mohamed";
 
             #endregion
 
+            #region Struct
+
+            //St s = new St();
+            //Console.WriteLine(s.MyProperty);
+            //s.MyMethod();
+            #endregion
+
+            #region Enum
+            var End = Day.Saturday;
+            if (Day.WeekEnd.HasFlag(End))
+            {
+                Console.WriteLine("Enjoy");
+            }
+            else
+            {
+                Console.WriteLine("Not Enjoy");
+            }
+
+            var m = "FEB";
+            //Console.WriteLine((int)Enum.Parse(typeof(Month),m));
+            //if (Enum.TryParse(m, out Month mo ))
+            //{
+            //    Console.WriteLine(mo.ToString());
+            //    Console.WriteLine((int)mo);
+            //}
+            //if (Enum.IsDefined(typeof(Month), m))
+            //{
+            //    Console.WriteLine(Enum.Parse(typeof(Month),m));
+            //    Console.WriteLine((int)Enum.Parse(typeof(Month), m));
+            //}
+
+            /// LOOP IN ENUM
+            // 
+            //foreach (var x in Enum.GetValues(typeof(Month)))
+            //{
+            //    Console.WriteLine(x);
+            //    Console.WriteLine((int)x);
+            //}
+            foreach(var x in Enum.GetNames(typeof(Month)))
+            {
+                Console.WriteLine($"{x} : {(int)Enum.Parse(typeof(Month), x)}");
+            }
+            #endregion
+
+
             Console.ReadKey();
         }
-         static void Version()
-        {
-            var V = new Version();
-            for (int i = 0; i < 1000; i++)
-            {
-                V = new Version();
 
-            }
-        }
+        // static void Version()
+        //{
+        //    var V = new Version();
+        //    for (int i = 0; i < 1000; i++)
+        //    {
+        //        V = new Version();
+
+        //    }
+        //}
+
 
     }
 
@@ -472,7 +517,7 @@ namespace Index
 
     #region Delegate
     public class Rectangle
-    
+
     {
         public void Area(int width, int height)
         {
@@ -489,7 +534,7 @@ namespace Index
 
     #endregion
 
-    public delegate void ChangePriceHandler(Stock s ,decimal oldPrice);
+    public delegate void ChangePriceHandler(Stock s, decimal oldPrice);
 
     #region Event
     public class Stock
@@ -501,15 +546,15 @@ namespace Index
 
         public Stock(string name)
         {
-        this.Name= name;
+            this.Name = name;
         }
 
         public void ChangePriceBy(decimal percent)
         {
             var oldPrice = Price;
             Price += Math.Round(Price * percent, 2);
-            if(OnChangePrice!= null) 
-                OnChangePrice(this,oldPrice);
+            if (OnChangePrice != null)
+                OnChangePrice(this, oldPrice);
         }
 
     }
@@ -543,7 +588,7 @@ namespace Index
         public static bool operator !=(Money a, Money b) => a.Amount != b.Amount;
 
         // Unary Operator 
-        public static Money operator ++(Money a) =>new Money( ++a.Amount);
+        public static Money operator ++(Money a) => new Money(++a.Amount);
         public static Money operator --(Money a) => new Money(--a.Amount);
 
 
@@ -559,24 +604,71 @@ namespace Index
     #endregion
 
     #region Finilizer (Garbage Collector)
-    public class Person
+    //public class Person
+    //{
+    //    public string Name { get; set; }
+
+
+    //    public Person()
+    //    {
+    //        Console.WriteLine("This is Constructor");
+
+    //    }
+
+    //    ~Person()
+    //    {
+    //        Console.WriteLine("This is Destructor");
+    //    }
+    //}
+    #endregion
+
+    #region Struct
+    public struct St
     {
-        public string Name { get; set; }
+        private int z;
+        public int MyProperty { get; set; }
 
-
-        public Person()
+        public void MyMethod()
         {
-            Console.WriteLine("This is Constructor");
-            
+            Console.WriteLine("Do SomeThing Again");
         }
 
-        ~Person()
-        {
-            Console.WriteLine("This is Destructor");
-        }
+
+
     }
     #endregion
 
+    #region Enum
+    enum Month : int
+    {
+        JAN = 1,
+        FEB,
+        MAR,
+        APR,
+        MAY,
+        JUN,
+        JUL,
+        AUG,
+        SEP,
+        OCT,
+        NOV,
+        DEC
+    }
+
+    [Flags]
+    enum Day
+    {
+        Monday = 0b_0000_0001,// 1
+        Tuesday = 0b_0000_0010,// 2
+        Wednesday = 0b_0000_0100,// 4
+        Thursday = 0b_0000_1000,// 8
+        Friday = 0b_0001_0000,// 16
+        Saturday = 0b_0010_0000,// 32
+        Sunday = 0b_0100_0000,// 64
+        BusDay = Monday | Tuesday | Wednesday | Thursday | Friday,
+        WeekEnd = Saturday | Sunday,
+    }
+    #endregion
 
 
 
