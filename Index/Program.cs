@@ -1,9 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
+using Index.Inheritance;
 
 namespace Index
 {
     public delegate void RecDele(int width, int height);
+    public delegate void OnChange(Porsa O, decimal changePrice);
     internal class Program
     {
         static void Main(string[] args)
@@ -241,57 +243,134 @@ namespace Index
             #endregion
 
             #region Enum
-            var End = Day.Saturday;
-            if (Day.WeekEnd.HasFlag(End))
-            {
-                Console.WriteLine("Enjoy");
-            }
-            else
-            {
-                Console.WriteLine("Not Enjoy");
-            }
+            //var End = Day.Saturday;
+            //if (Day.WeekEnd.HasFlag(End))
+            //{
+            //    Console.WriteLine("Enjoy");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Not Enjoy");
+            //}
 
-            var m = "FEB";
-            //Console.WriteLine((int)Enum.Parse(typeof(Month),m));
-            //if (Enum.TryParse(m, out Month mo ))
+            //var m = "FEB";
+            //Console.WriteLine((int)Enum.Parse(typeof(Month), m));
+            //if (Enum.TryParse(m, out Month mo))
             //{
             //    Console.WriteLine(mo.ToString());
             //    Console.WriteLine((int)mo);
             //}
             //if (Enum.IsDefined(typeof(Month), m))
             //{
-            //    Console.WriteLine(Enum.Parse(typeof(Month),m));
+            //    Console.WriteLine(Enum.Parse(typeof(Month), m));
             //    Console.WriteLine((int)Enum.Parse(typeof(Month), m));
             //}
 
-            /// LOOP IN ENUM
-            // 
+            // LOOP IN ENUM
+
+
             //foreach (var x in Enum.GetValues(typeof(Month)))
             //{
             //    Console.WriteLine(x);
             //    Console.WriteLine((int)x);
             //}
-            foreach(var x in Enum.GetNames(typeof(Month)))
+
+            //foreach (var x in Enum.GetNames(typeof(Month)))
+            //{
+            //    Console.WriteLine($"{x} : {(int)Enum.Parse(typeof(Month), x)}");
+            //}
+            #endregion
+
+            #region Event Examples
+            //Porsa o = new Porsa("Amazon");
+            //o.Price = 1000; 
+            //o.OnChangePrice += (Porsa o, decimal changePrice)=>
+            //{
+            //    if (changePrice > o.Price)
+            //    {
+            //        Console.BackgroundColor = ConsoleColor.Red;
+            //        Console.WriteLine("Down");
+            //    }
+            //    else if (changePrice < o.Price)
+            //    {
+            //        Console.BackgroundColor = ConsoleColor.Green;
+            //        Console.WriteLine("Up");
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("Equal");
+            //    }
+            //};
+            //o.Change(20);
+            #endregion
+
+            #region Inheritance
+            Animal test = new Animal();
+            test.Name = "donky";
+            //Console.WriteLine(test);
+
+            Eagle e = new Eagle();
+            //e.Move();
+            Animal a = e;
+            //e.Fly();
+            // UpCasting 
+            //Animal a = e;
+            //a.Move();
+            // DownCasting
+            //Eagle e2 = new Eagle();
+            //e2 = (Eagle)a;
+
+            // Constructor and Inheritance 
+            //SubClass sub = new SubClass("hany",10);
+            //Console.WriteLine(sub)/*;*/
+            #endregion
+
+            #region Example Inheritance
+            Manager m = new Manager()
             {
-                Console.WriteLine($"{x} : {(int)Enum.Parse(typeof(Month), x)}");
-            }
+                ID = 1000,
+                Name = "Mohamed Hany",
+                LoggedHours = 176,
+                Wage = 1
+            };
+            //Console.WriteLine(m);
+
+            Maintenance ma = new Maintenance()
+            {
+                ID = 1000,
+                Name = "Mohamed Hany",
+                LoggedHours = 180,
+                Wage = 2,
+            };
+            //Console.WriteLine(ma);
+
+            Developer d = new Developer()
+            {
+                ID = 100,
+                Name = "Reem A",
+                LoggedHours = 180,
+                Wage = 14,
+                TaskCompleted = true,
+            };
+            //Console.WriteLine(d);
+
+
+            #endregion
+
+            #region Interface
+            CaterPaler c = new CaterPaler("Honda", "Civic", 2020);
+            //c.Move();
+
+            #endregion
+
+            #region Interface Example
+            Cashier c1 = new Cashier(new Visa(99999.99m));
+            //Console.WriteLine(c1);
             #endregion
 
 
             Console.ReadKey();
         }
-
-        // static void Version()
-        //{
-        //    var V = new Version();
-        //    for (int i = 0; i < 1000; i++)
-        //    {
-        //        V = new Version();
-
-        //    }
-        //}
-
-
     }
 
 
@@ -670,7 +749,207 @@ namespace Index
     }
     #endregion
 
+    #region Event Examples
+    public class Porsa
+    {
+        public decimal Price { get; set; }
+        public string Name { get; set; }
+
+        public event OnChange OnChangePrice;
+        public Porsa(string name)
+        {
+            Name = name;
+        }
+
+        public void Change(decimal Percent)
+        {
+            var oldPrice = Price;
+            Price += Math.Round(Price * Percent, 2);
+            if (OnChangePrice != null)
+                OnChangePrice(this, oldPrice);
+        }
+    }
+    #endregion
+
+    #region Inheritance
+    class Animal
+    {
+        public string Name { get; set; }
+        public virtual void Move()
+        {
+            Console.WriteLine("Im Moving");
+        }
+        public override string ToString()
+        {
+            return $"{Name} is Animal";
+        }
+
+    }
+    class Eagle : Animal
+    {
+        public sealed override void Move()
+        {
+            Console.WriteLine("another moving");
+        }
+        public void Fly()
+        {
+            Console.WriteLine("Flying");
+        }
+    }
+
+    public class BaseClass
+    {
+        public string Name { get; set; } = "";
+        public int Id { get; set; } = 0;
+
+        public BaseClass(string name, int id)
+        {
+            Name = name;
+            Id = id;
+        }
+
+        public BaseClass()
+        {
+
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} {Id}";
+        }
+    }
+
+    public class SubClass : BaseClass
+    {
+        public SubClass() : base() { }
+        public SubClass(string name, int id) : base(name, id) { }
 
 
+    }
 
+    #endregion
+
+    #region Interface 
+    class Vehicle
+    {
+        public Vehicle(string name, string model, int year)
+        {
+            Name = name;
+            Model = model;
+            Year = year;
+        }
+        public string Name { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+
+
+    }
+
+    class Honda : Vehicle
+    {
+        public Honda(string name, string model, int year) : base(name, model, year) { }
+
+
+    }
+
+    class CaterPaler : Vehicle, ILoad, IMove
+    {
+        public CaterPaler(string name, string model, int year) : base(name, model, year) { }
+        public void Load()
+        {
+            Console.WriteLine("Loading");
+        }
+        public void UnLoad()
+        {
+            Console.WriteLine("UnLoading");
+        }
+        public void Move()
+        {
+            Console.WriteLine("Moving");
+        }
+        public void UnMove()
+        {
+            Console.WriteLine("UnMoving");
+        }
+    }
+
+    interface ILoad
+    {
+        void Load();
+        void UnLoad();
+    }
+
+    interface IMove
+    {
+        void Move();
+        void UnMove();
+    }
+
+
+    #endregion
+
+    #region Interface Example
+
+    class Cashier
+    {
+        private IPayment _payment;
+
+        public Cashier(IPayment payment)
+        {
+            _payment = payment;
+        }
+
+        public override string ToString()
+        {
+            return _payment.Pay() ;
+        }
+    }
+
+    interface IPayment
+
+    {
+        string Pay();
+    }
+
+
+    class Cash : IPayment
+    {
+        public decimal Amount { get; set; }
+        public Cash(decimal amount)
+        {
+            Amount = amount;
+        }
+        public string Pay()
+        {
+            return $"Cash Payment: ${Math.Round(Amount, 2):N0}";
+        }
+    }
+    class Visa : IPayment
+    {
+        public decimal Amount { get; set; }
+        public Visa(decimal amount)
+        {
+            Amount = amount;
+        }
+
+        public string Pay()
+        {
+            return $"Visa Payment: ${Math.Round(Amount, 2):N0}";
+        }
+    }
+    class Depit : IPayment
+    {
+        public decimal Amount { get; set; }
+        public Depit(decimal amount)
+        {
+            Amount = amount;
+        }
+
+        public string Pay()
+        {
+            return $"Depit Payment: ${Math.Round(Amount, 2):N0}";
+        }
+    }
+
+    #endregion
 }
